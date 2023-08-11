@@ -1,6 +1,7 @@
 <script>
 
 import championData from './data/champion.json'
+import MyModal from './components/MyModal.vue'
 
 export default {
   name : 'App',
@@ -8,8 +9,10 @@ export default {
   data(){
     return {
       championData,
+      ban: [0,1,2,3,4,5,6,7,8,9],
       deck: [],
-      tn: 10
+      tn: 10,
+      modal: false
     }
   },
 
@@ -27,6 +30,7 @@ export default {
         this.deck[index] = this.deck[randomPosition];
         this.deck[randomPosition] = temporary;
       }
+      console.log(this.array)
     },
 
     en(i) {
@@ -39,6 +43,14 @@ export default {
 
     src(i) {
       return this.champs[this.en(i)].image.full
+    },
+
+    openModal() {
+      this.modal = true
+    },
+
+    closeModal() {
+      this.modal = false
     }
   },
 
@@ -48,7 +60,12 @@ export default {
     },
 
     array() {
-      return Array.from(Array(162).keys())
+      let all = Array.from(Array(164).keys())
+      for (let i=0; i<this.ban.length; i++) {
+        const idx = all.indexOf(this.ban[i])
+        if (idx > -1) all.splice(idx, 1)
+      }
+      return all
     },
 
     first() {
@@ -63,7 +80,7 @@ export default {
   },
 
   components: {
-    
+    MyModal
   },
 
   created() {
@@ -76,13 +93,15 @@ export default {
 
 <template>
   <div>
+    <MyModal v-if="modal" @close-modal="modal=false" />
     <div>
       <h1>칼바람 내전 랜덤 조합 메이커</h1>
     </div>
     <div>
       <span class="input">팀당 챔피언:</span>
-      <input type="number" min=1 max=80 class="input" v-model="tn">
+      <input type="number" min=1 max=70 class="input" v-model="tn">
       <button class="button" @click="shuffle">새 게임</button>
+      <button @click="openModal">밴</button>
     </div>
     <div>
       <h2>Team 1</h2>
