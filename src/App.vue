@@ -32,7 +32,6 @@ export default {
         this.deck[index] = this.deck[randomPosition];
         this.deck[randomPosition] = temporary;
       }
-      console.log(this.array)
     },
 
     en(i) {
@@ -57,7 +56,6 @@ export default {
         this.ban.push(index)
         this.ban.sort()
       }
-      console.log(this.ban)
     },
 
     openModal() {
@@ -129,12 +127,12 @@ export default {
       <h2>Team 1</h2>
     </div>
     <div v-for="i in first" :key="i" class="champion">
-      <img :src="`./img/${src(deck[i])}`" class="logo" alt="">
+      <img :src="`./img/${src(deck[i])}`" class="bigLogo" alt="">
       <span class="label">{{kr(deck[i])}}</span>
     </div>
     <br>
     <div v-for="i in second" :key="i" class="champion">
-      <img :src="`./img/${src(deck[i+first])}`" class="logo" alt="">
+      <img :src="`./img/${src(deck[i+first])}`" class="bigLogo" alt="">
       <span class="label">{{kr(deck[i+first])}}</span>
     </div>
     <br>
@@ -142,12 +140,12 @@ export default {
       <h2>Team 2</h2>
     </div>
     <div v-for="i in first" :key="i" class="champion">
-      <img :src="`./img/${src(deck[i+81])}`" class="logo" alt="">
+      <img :src="`./img/${src(deck[i+81])}`" class="bigLogo" alt="">
       <span class="label">{{kr(deck[i+81])}}</span>
     </div>
     <br>
     <div v-for="i in second" :key="i" class="champion">
-      <img :src="`./img/${src(deck[i+81+first])}`" class="logo" alt="">
+      <img :src="`./img/${src(deck[i+81+first])}`" class="bigLogo" alt="">
       <span class="label">{{kr(deck[i+81+first])}}</span>
     </div>
   </div>
