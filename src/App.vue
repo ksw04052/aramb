@@ -1,6 +1,7 @@
 <script>
 
 import championData from './data/champion.json'
+import championOrder from './data/championOrder.json'
 import MyModal from './components/MyModal.vue'
 
 export default {
@@ -9,7 +10,8 @@ export default {
   data(){
     return {
       championData,
-      ban: [0,1,2,3,4,5,6,7,8,9],
+      championOrder,
+      ban: [],
       deck: [],
       tn: 10,
       modal: false
@@ -45,12 +47,29 @@ export default {
       return this.champs[this.en(i)].image.full
     },
 
+    manageBan(i) {
+      let index = this.championOrder.findIndex(champ => champ.name == i)
+      if(this.ban.includes(index)) {
+        let idx = this.ban.findIndex(a => a == index)
+        this.ban.splice(idx, 1)
+      }
+      else {
+        this.ban.push(index)
+        this.ban.sort()
+      }
+      console.log(this.ban)
+    },
+
     openModal() {
       this.modal = true
     },
 
     closeModal() {
       this.modal = false
+    },
+
+    test() {
+      console.log(this.championData)
     }
   },
 
@@ -93,15 +112,18 @@ export default {
 
 <template>
   <div>
-    <MyModal v-if="modal" @close-modal="modal=false" />
+    <MyModal v-if="modal" @close-modal="modal=false" @toggle-ban="manageBan" v-bind:ban="ban" />
     <div>
       <h1>칼바람 내전 랜덤 조합 메이커</h1>
     </div>
     <div>
       <span class="input">팀당 챔피언:</span>
       <input type="number" min=1 max=70 class="input" v-model="tn">
-      <button class="button" @click="shuffle">새 게임</button>
-      <button @click="openModal">밴</button>
+      <div>
+        <button @click="openModal">밴</button>
+        <button @click="shuffle">새 게임</button>
+        <!-- <button @click="test">테스트</button> -->
+      </div>
     </div>
     <div>
       <h2>Team 1</h2>
@@ -142,9 +164,8 @@ div {
   font-family:'gabia_solmee';
   text-shadow: -1px 0 rgb(255, 255, 255), 0 1px rgb(255, 255, 255), 1px 0 rgb(255, 255, 255), 0 -1px rgb(255, 255, 255);
 }
-.button {
-  position: relative;
-  bottom: 5px;
+button {
+  margin: 2px;
 }
 .champion {
   vertical-align: top;
